@@ -1227,7 +1227,7 @@ static int msm_fb_register(struct msm_fb_data_type *mfd)
 #elif defined(CONFIG_FB_MSM_MDP40)
 	snprintf(fix->id, sizeof(fix->id), "msmfb40_%x", (__u32) *id);
 #else
-	error CONFIG_FB_MSM_MDP undefined !
+//	error CONFIG_FB_MSM_MDP undefined !
 #endif
 	 fbi->fbops = &msm_fb_ops;
 	fbi->flags = FBINFO_FLAG_DEFAULT;

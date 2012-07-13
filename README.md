@@ -1,3 +1,8 @@
+NONAMER NOTE:
+-i'll make what i can for this time, kernel compiling well with "test_bravo_defconfig" but not booting
+
+big thanks thoemy for his sources...
+
 In case anyone other than me reads this. There are a lot of things to do. Adding
 all neccessary drivers from older kernels and adapting the interfaces. This is
 just a list of things I noticed or is not important to fix now.

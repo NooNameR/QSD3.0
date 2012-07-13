@@ -1926,7 +1926,7 @@ static int mdp_probe(struct platform_device *pdev)
 			mfd->lut_update = mdp_lut_update_nonlcdc;
 			mfd->do_histogram = mdp_do_histogram;
 		} else {
-			mfd->dma_fnc = mdp_dma_s_update;
+			//mfd->dma_fnc = mdp_dma_s_update;
 			mfd->dma = &dma_s_data;
 		}
 #endif
@@ -2307,3 +2307,4 @@ static int __init mdp_driver_init(void)
 }
 
 module_init(mdp_driver_init);
+
