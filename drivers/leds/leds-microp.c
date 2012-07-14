@@ -520,9 +520,9 @@ pr_info("%s\n", __func__);
 		ret = microp_i2c_write(MICROP_I2C_WCMD_LED_MODE, data, 7);
 		pr_info("%s: enabled\n", __func__);
 		msleep(150);
-		microp_mobeam_enable(1);
+//		microp_mobeam_enable(1);
 	} else {
-		microp_mobeam_enable(0);
+	//	microp_mobeam_enable(0);
 		ret = microp_i2c_write(MICROP_I2C_WCMD_LED_MODE, leds_data, 7);
 	}
 	return count;

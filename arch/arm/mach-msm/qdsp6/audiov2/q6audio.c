@@ -261,7 +261,7 @@ static struct audio_client *audio_client_alloc(unsigned bufsz)
 	struct audio_client *ac;
 	int n;
 
-	ac = kzalloc(sizeof(*ac), GFP_KERNEL);
+	ac = kmalloc(sizeof(*ac), GFP_KERNEL);
 	if (!ac)
 		return 0;
 
