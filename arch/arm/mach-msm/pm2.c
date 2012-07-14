@@ -1841,9 +1841,9 @@ static int __init msm_pm_init(void)
 	smsm_change_state(SMSM_APPS_DEM, 0, DEM_SLAVE_SMSM_RUN);
 #endif
 
-	BUG_ON(msm_pm_modes == NULL);
+	/*BUG_ON(msm_pm_modes == NULL);
 
-	atomic_set(&msm_pm_init_done, 1);
+	atomic_set(&msm_pm_init_done, 1);*/
 	suspend_set_ops(&msm_pm_ops);
 
 	msm_pm_mode_sysfs_add();
