@@ -360,7 +360,7 @@ err_switch_dev_register:
 static int htc_35mm_remove(struct platform_device *pdev)
 {
 	H2W_DBG("");
-//	switch_dev_unregister(&hi->hs_change);
+	switch_dev_unregister(&hi->hs_change);
 	kzfree(hi);
 
 #if 0 /* Add keys later */
