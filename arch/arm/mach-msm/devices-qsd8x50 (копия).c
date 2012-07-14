@@ -444,10 +444,10 @@ static struct msm_pm_irq_calls qsd8x50_pm_irq_calls = {
 	.exit_sleep3 = msm_irq_exit_sleep3,
 };
 
-/*void msm_pm_register_irqs(void)
+void msm_pm_register_irqs(void)
 {
 	msm_pm_set_irq_extns(&qsd8x50_pm_irq_calls);
-}*/
+}
 
 struct platform_device msm_device_smd = {
 	.name	= "msm_smd",

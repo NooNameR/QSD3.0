@@ -2440,7 +2440,7 @@ static void __init qsd8x50_init(void)
 				ARRAY_SIZE(msm_spi_board_info));
 	msm_pm_set_platform_data(msm_pm_data, ARRAY_SIZE(msm_pm_data));
 	BUG_ON(msm_pm_boot_init(&msm_pm_boot_pdata));
-//	msm_pm_register_irqs();
+	msm_pm_register_irqs();
 
 #ifdef CONFIG_SURF_FFA_GPIO_KEYPAD
 	if (machine_is_qsd8x50_ffa())
