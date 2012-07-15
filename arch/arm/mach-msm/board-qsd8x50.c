@@ -2406,7 +2406,7 @@ static void __init qsd8x50_init(void)
 {
 	msm_clock_init(&qsd8x50_clock_init_data);
 	qsd8x50_cfg_smc91x();
-	acpuclk_init(&acpuclk_8x50_soc_data);
+	//acpuclk_init(&acpuclk_8x50_soc_data);
 #ifdef CONFIG_USB_FUNCTION
 	msm_hsusb_pdata.swfi_latency =
 		msm_pm_data
@@ -2438,8 +2438,8 @@ static void __init qsd8x50_init(void)
 				ARRAY_SIZE(msm_i2c_board_info));
 	spi_register_board_info(msm_spi_board_info,
 				ARRAY_SIZE(msm_spi_board_info));
-	msm_pm_set_platform_data(msm_pm_data, ARRAY_SIZE(msm_pm_data));
-	BUG_ON(msm_pm_boot_init(&msm_pm_boot_pdata));
+	//msm_pm_set_platform_data(msm_pm_data, ARRAY_SIZE(msm_pm_data));
+	//BUG_ON(msm_pm_boot_init(&msm_pm_boot_pdata));
 //	msm_pm_register_irqs();
 
 #ifdef CONFIG_SURF_FFA_GPIO_KEYPAD

@@ -83,7 +83,7 @@ void *smem_alloc(unsigned id, unsigned size)
 	return NULL;
 }
 #else
-#error No SMD Package Specified; aborting
+//#error No SMD Package Specified; aborting
 #endif
 
 #define SZ_DIAG_ERR_MSG 0xC8

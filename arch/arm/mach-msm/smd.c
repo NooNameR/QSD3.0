@@ -65,7 +65,7 @@
 #define SMD_VERSION 0x00020000
 #define SMSM_SNAPSHOT_CNT 64
 
-uint32_t SMSM_NUM_ENTRIES = 8;
+uint32_t SMSM_NUM_ENTRIES2 = 8;
 uint32_t SMSM_NUM_HOSTS = 3;
 
 enum {
@@ -2242,7 +2242,7 @@ static int smsm_cb_init(void)
 	int n;
 	int ret = 0;
 
-	smsm_states = kmalloc(sizeof(struct smsm_state_info)*SMSM_NUM_ENTRIES,
+	smsm_states = kmalloc(sizeof(struct smsm_state_info)*SMSM_NUM_ENTRIES2,
 		   GFP_KERNEL);
 
 	if (!smsm_states) {
@@ -2251,7 +2251,7 @@ static int smsm_cb_init(void)
 	}
 
 	mutex_lock(&smsm_lock);
-	for (n = 0; n < SMSM_NUM_ENTRIES; n++) {
+	for (n = 0; n < SMSM_NUM_ENTRIES2; n++) {
 		state_info = &smsm_states[n];
 		state_info->last_value = __raw_readl(SMSM_STATE_ADDR(n));
 		INIT_LIST_HEAD(&state_info->callbacks);
@@ -2277,12 +2277,12 @@ static int smsm_init(void)
 	smsm_size_info = smem_alloc(SMEM_SMSM_SIZE_INFO,
 				sizeof(struct smsm_size_info_type));
 	if (smsm_size_info) {
-		SMSM_NUM_ENTRIES = smsm_size_info->num_entries;
+		SMSM_NUM_ENTRIES2 = smsm_size_info->num_entries;
 		SMSM_NUM_HOSTS = smsm_size_info->num_hosts;
 	}
 
 	i = kfifo_alloc(&smsm_snapshot_fifo,
-			sizeof(uint32_t) * SMSM_NUM_ENTRIES * SMSM_SNAPSHOT_CNT,
+			sizeof(uint32_t) * SMSM_NUM_ENTRIES2 * SMSM_SNAPSHOT_CNT,
 			GFP_KERNEL);
 	if (i) {
 		pr_err("%s: SMSM state fifo alloc failed %d\n", __func__, i);
@@ -2293,7 +2293,7 @@ static int smsm_init(void)
 
 	if (!smsm_info.state) {
 		smsm_info.state = smem_alloc2(ID_SHARED_STATE,
-					      SMSM_NUM_ENTRIES *
+					      SMSM_NUM_ENTRIES2 *
 					      sizeof(uint32_t));
 
 		if (smsm_info.state) {
@@ -2306,12 +2306,12 @@ static int smsm_init(void)
 
 	if (!smsm_info.intr_mask) {
 		smsm_info.intr_mask = smem_alloc2(SMEM_SMSM_CPU_INTR_MASK,
-						  SMSM_NUM_ENTRIES *
+						  SMSM_NUM_ENTRIES2 *
 						  SMSM_NUM_HOSTS *
 						  sizeof(uint32_t));
 
 		if (smsm_info.intr_mask)
-			for (i = 0; i < SMSM_NUM_ENTRIES; i++)
+			for (i = 0; i < SMSM_NUM_ENTRIES2; i++)
 				__raw_writel(0xffffffff,
 				       SMSM_INTR_MASK_ADDR(i, SMSM_APPS));
 	}
@@ -2368,12 +2368,12 @@ static void smsm_cb_snapshot(void)
 	int ret;
 
 	ret = kfifo_avail(&smsm_snapshot_fifo);
-	if (ret < (SMSM_NUM_ENTRIES * 4)) {
+	if (ret < (SMSM_NUM_ENTRIES2 * 4)) {
 		pr_err("%s: SMSM snapshot full %d\n", __func__, ret);
 		return;
 	}
 
-	for (n = 0; n < SMSM_NUM_ENTRIES; n++) {
+	for (n = 0; n < SMSM_NUM_ENTRIES2; n++) {
 		new_state = __raw_readl(SMSM_STATE_ADDR(n));
 
 		ret = kfifo_in(&smsm_snapshot_fifo,
@@ -2509,7 +2509,7 @@ int smsm_change_intr_mask(uint32_t smsm_entry,
 	uint32_t  old_mask, new_mask;
 	unsigned long flags;
 
-	if (smsm_entry >= SMSM_NUM_ENTRIES) {
+	if (smsm_entry >= SMSM_NUM_ENTRIES2) {
 		pr_err("smsm_change_state: Invalid entry %d\n",
 		       smsm_entry);
 		return -EINVAL;
@@ -2535,7 +2535,7 @@ EXPORT_SYMBOL(smsm_change_intr_mask);
 
 int smsm_get_intr_mask(uint32_t smsm_entry, uint32_t *intr_mask)
 {
-	if (smsm_entry >= SMSM_NUM_ENTRIES) {
+	if (smsm_entry >= SMSM_NUM_ENTRIES2) {
 		pr_err("smsm_change_state: Invalid entry %d\n",
 		       smsm_entry);
 		return -EINVAL;
@@ -2557,7 +2557,7 @@ int smsm_change_state(uint32_t smsm_entry,
 	unsigned long flags;
 	uint32_t  old_state, new_state;
 
-	if (smsm_entry >= SMSM_NUM_ENTRIES) {
+	if (smsm_entry >= SMSM_NUM_ENTRIES2) {
 		pr_err("smsm_change_state: Invalid entry %d",
 		       smsm_entry);
 		return -EINVAL;
@@ -2586,7 +2586,7 @@ uint32_t smsm_get_state(uint32_t smsm_entry)
 	uint32_t rv = 0;
 
 	/* needs interface change to return error code */
-	if (smsm_entry >= SMSM_NUM_ENTRIES) {
+	if (smsm_entry >= SMSM_NUM_ENTRIES2) {
 		pr_err("smsm_change_state: Invalid entry %d",
 		       smsm_entry);
 		return 0;
@@ -2614,14 +2614,14 @@ void notify_smsm_cb_clients_worker(struct work_struct *work)
 	uint32_t state_changes;
 	int ret;
 	unsigned long flags;
-	int snapshot_size = SMSM_NUM_ENTRIES * sizeof(uint32_t);
+	int snapshot_size = SMSM_NUM_ENTRIES2 * sizeof(uint32_t);
 
 	if (!smd_initialized)
 		return;
 
 	while (kfifo_len(&smsm_snapshot_fifo) >= snapshot_size) {
 		mutex_lock(&smsm_lock);
-		for (n = 0; n < SMSM_NUM_ENTRIES; n++) {
+		for (n = 0; n < SMSM_NUM_ENTRIES2; n++) {
 			state_info = &smsm_states[n];
 
 			ret = kfifo_out(&smsm_snapshot_fifo, &new_state,
@@ -2687,7 +2687,7 @@ int smsm_state_cb_register(uint32_t smsm_entry, uint32_t mask,
 	struct smsm_state_cb_info *cb_found = 0;
 	int ret = 0;
 
-	if (smsm_entry >= SMSM_NUM_ENTRIES)
+	if (smsm_entry >= SMSM_NUM_ENTRIES2)
 		return -EINVAL;
 
 	mutex_lock(&smsm_lock);
@@ -2752,7 +2752,7 @@ int smsm_state_cb_deregister(uint32_t smsm_entry, uint32_t mask,
 	struct smsm_state_cb_info *cb_info;
 	int ret = 0;
 
-	if (smsm_entry >= SMSM_NUM_ENTRIES)
+	if (smsm_entry >= SMSM_NUM_ENTRIES2)
 		return -EINVAL;
 
 	mutex_lock(&smsm_lock);

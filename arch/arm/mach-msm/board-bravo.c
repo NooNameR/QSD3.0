@@ -976,7 +976,7 @@ static void __init bravo_init(void)
 	qsd8x50_init_gpiomux(qsd8x50_gpiomux_cfgs);
 
         /* TODO: CDMA version */
-	acpuclk_init(&acpuclk_8x50_soc_data);
+	//acpuclk_init(&acpuclk_8x50_soc_data);
 
         msm_gpios_request_enable(misc_gpio_table, ARRAY_SIZE(misc_gpio_table));
 

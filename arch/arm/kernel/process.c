@@ -206,8 +206,8 @@ EXPORT_SYMBOL_GPL(cpu_idle_wait);
  */
 static void default_idle(void)
 {
-	if (!need_resched())
-		arch_idle();
+/*	if (!need_resched())
+		arch_idle();*/
 	local_irq_enable();
 }
 
